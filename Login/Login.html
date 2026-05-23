@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Login - TemuTrip</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="Login.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="Login.css" />
 </head>
+
 <body>
 
   <div class="container">
     <div class="login-box">
-      
-      <!-- Logo & Welcome -->
+
       <div class="header-content">
         <div class="logo">
-          <img src="https://cdn.jsdelivr.net/npm/lucide-static@0.441.0/icons/leaf.svg" alt="Logo" class="logo-icon">
+          <img src="../Gambar/temutrip_logo.svg" alt="Logo" class="logo-icon">
           <span class="logo-text">TemuTrip</span>
         </div>
         <h1 id="welcome-text">Selamat Datang</h1>
         <p class="subtitle">Masuk untuk melanjutkan petualanganmu</p>
       </div>
 
-      <!-- Tabs -->
       <div class="tabs">
         <button class="tab active" onclick="switchTab('signin')">Sign In</button>
         <button class="tab" onclick="switchTab('signup')">Sign Up</button>
       </div>
 
-      <!-- Form Sign In -->
       <form action="login.php" method="POST" class="form-container" id="signin">
         <div class="form-group">
           <label>Username atau Email</label>
-          <input type="text" name="user_id" class="input-field" placeholder="Masukkan username atau email " required pattern="([^@]+|[a-zA-Z0-9._%+\-]+@gmail\.com)" title="Masukkan Username Anda, atau gunakan alamat email berakhiran @gmail.com" />
+          <input type="text" name="user_id" class="input-field" placeholder="Masukkan username atau email " required
+            pattern="([^@]+|[a-zA-Z0-9._%+\-]+@gmail\.com)"
+            title="Masukkan Username Anda, atau gunakan alamat email berakhiran @gmail.com" />
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -44,18 +46,17 @@
             </button>
           </div>
         </div>
-        
+
         <div class="form-options">
           <label class="remember-me">
             <input type="checkbox"> Ingat saya
           </label>
           <a href="#" class="forgot-link" onclick="showForgot(event)">Lupa Sandi?</a>
         </div>
-        
+
         <button type="submit" name="login" class="btn-primary">Sign In</button>
       </form>
 
-      <!-- Form Sign Up -->
       <form action="register.php" method="POST" class="form-container hidden" id="signup">
         <div class="form-group">
           <label>Username</label>
@@ -63,7 +64,8 @@
         </div>
         <div class="form-group">
           <label>Email (Khusus Gmail)</label>
-          <input type="email" name="email" class="input-field" placeholder="namaanda@gmail.com" required pattern="[a-zA-Z0-9._%+\-]+@gmail\.com" title="Harap gunakan alamat email yang berakhiran @gmail.com" />
+          <input type="email" name="email" class="input-field" placeholder="namaanda@gmail.com" required
+            pattern="[a-zA-Z0-9._%+\-]+@gmail\.com" title="Harap gunakan alamat email yang berakhiran @gmail.com" />
         </div>
         <div class="form-group">
           <label>Password</label>
@@ -77,7 +79,8 @@
         <div class="form-group">
           <label>Konfirmasi Password</label>
           <div class="input-wrapper">
-            <input type="password" name="konfirmasi_password" class="input-field" placeholder="Ulangi password" required />
+            <input type="password" name="konfirmasi_password" class="input-field" placeholder="Ulangi password"
+              required />
             <button type="button" class="toggle-pw" onclick="togglePassword(this)" tabindex="-1">
               <img src="https://cdn.jsdelivr.net/npm/lucide-static@0.441.0/icons/eye.svg" class="eye-icon" />
             </button>
@@ -86,15 +89,15 @@
         <button type="submit" name="register" class="btn-primary">Daftar Sekarang</button>
       </form>
 
-      <!-- Form Lupa Sandi -->
       <form action="forgot_password.php" method="POST" class="form-container hidden" id="forgot">
         <div class="header-content small">
-           <h2>Reset Password</h2>
-           <p class="subtitle">Kami akan mengirimkan instruksi ke email Anda.</p>
+          <h2>Reset Password</h2>
+          <p class="subtitle">Kami akan mengirimkan instruksi ke email Anda.</p>
         </div>
         <div class="form-group">
           <label>Alamat Email</label>
-          <input type="email" name="email" class="input-field" placeholder="namaanda@gmail.com" required pattern="[a-zA-Z0-9._%+\-]+@gmail\.com" title="Harap gunakan alamat email yang berakhiran @gmail.com" />
+          <input type="email" name="email" class="input-field" placeholder="namaanda@gmail.com" required
+            pattern="[a-zA-Z0-9._%+\-]+@gmail\.com" title="Harap gunakan alamat email yang berakhiran @gmail.com" />
         </div>
         <button type="submit" name="forgot_password" class="btn-primary">Kirim Link Reset</button>
         <a href="#" class="back-to-login" onclick="hideForgot(event)">Kembali ke Login</a>
@@ -105,4 +108,5 @@
 
   <script src="Login.js"></script>
 </body>
+
 </html>

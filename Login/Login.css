@@ -19,7 +19,7 @@ body {
   align-items: center;
   justify-content: center;
   font-family: 'Plus Jakarta Sans', sans-serif;
-  background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('beach.jpg');
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../Gambar/background.svg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -45,33 +45,41 @@ body {
   animation: slideDown 0.5s ease-out;
 }
 
-/* --- Header & Logo --- */
+/* --- Header & Logo (Logo di Samping Tulisan & Tetap Center) --- */
 .header-content {
   text-align: center;
 }
 
 .logo {
   display: flex;
+  flex-direction: row;
+  /* Membuat logo dan teks berdampingan horizontal */
   align-items: center;
+  /* Meluruskan as vertikal antara gambar dan tulisan */
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  /* Memastikan kesatuan elemen berada tepat di tengah-tengah */
+  gap: 14px;
+  /* Jarak renggang yang pas antara logo dan teks */
+  margin-bottom: 24px;
 }
 
 .logo-icon {
-  width: 32px;
-  height: 32px;
-  filter: invert(36%) sepia(21%) saturate(1210%) hue-rotate(113deg) brightness(95%) contrast(85%);
+  height: 65px;
+  /* Ukuran tinggi disesuaikan agar proporsional saat berdampingan */
+  width: auto;
+  object-fit: contain;
 }
 
 .logo-text {
-  font-size: 1.5rem;
+  font-size: 2.3rem;
+  /* Ukuran teks diselaraskan agar seimbang dengan tinggi logo */
   font-weight: 800;
   color: var(--primary);
   letter-spacing: -0.5px;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--text-dark);
@@ -187,13 +195,15 @@ h1, h2 {
   cursor: pointer;
 }
 
-.forgot-link, .back-to-login {
+.forgot-link,
+.back-to-login {
   color: var(--primary);
   text-decoration: none;
   font-weight: 600;
 }
 
-.forgot-link:hover, .back-to-login:hover {
+.forgot-link:hover,
+.back-to-login:hover {
   text-decoration: underline;
 }
 
@@ -230,8 +240,15 @@ h1, h2 {
 
 /* --- Animations --- */
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Fix Edge Eye */
