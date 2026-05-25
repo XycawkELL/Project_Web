@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keamanan & Privasi — TemuTrip</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="Home.css">
+
+  <style>
+    body {
+      animation: fadeIn 0.4s ease-in-out forwards;
+      background-color: #f8f9fa;
+    }
+    .fade-out {
+      animation: fadeOut 0.4s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .back-btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #1a1a1a;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      transition: transform 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+    }
+    .back-btn-nav:hover {
+      color: #2F5C4B; 
+      transform: translateX(-5px); 
+    }
+
+    .feature-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .feature-header {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+    
+    .feature-header h2 {
+      font-family: 'Playfair Display', serif;
+      color: #2F5C4B;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container" style="justify-content: flex-start;">
+      <a onclick="smoothNavigateUrl(event, 'profile.html')" class="back-btn-nav">
+        <i class="ph-bold ph-arrow-left" style="font-size: 1.4rem;"></i> Kembali ke Profile
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="feature-container">
+      <div class="feature-header">
+        <h2>Keamanan & Privasi</h2>
+        <p>Jaga akun kamu tetap aman dengan memperbarui sandi secara berkala.</p>
+      </div>
+      
+      <form onsubmit="event.preventDefault(); alert('Kata sandi berhasil diperbarui!');">
+        <div class="form-group">
+          <label>Kata Sandi Lama</label>
+          <input type="password" placeholder="••••••••" required />
+        </div>
+
+        <div class="form-group">
+          <label>Kata Sandi Baru</label>
+          <input type="password" placeholder="Minimal 8 karakter" required />
+        </div>
+
+        <div class="form-group">
+          <label>Konfirmasi Kata Sandi Baru</label>
+          <input type="password" placeholder="Ulangi kata sandi baru" required />
+        </div>
+
+        <button type="submit" style="background: #2F5C4B; color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 10px;">Perbarui Kata Sandi</button>
+      </form>
+    </div>
+  </main>
+
+  <script>
+    function smoothNavigateUrl(event, url) {
+      event.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => { window.location.href = url; }, 350);
+    }
+  </script>
+</body>
+</html>

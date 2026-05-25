@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Saya — TemuTrip</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <link rel="stylesheet" href="Home.css">
+
+  <style>
+    /* Efek Animasi Transisi Halus Bawaan Lo */
+    body {
+      animation: fadeIn 0.4s ease-in-out forwards;
+    }
+
+    .fade-out {
+      animation: fadeOut 0.4s ease-in-out forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    /* KUSTOMISASI TOMBOL KEMBALI PERSIS SEPERTI SCREENSHOT GAMBAR LO */
+    .top-left-clean-nav {
+      text-align: left;
+      padding: 30px 0 10px 45px;
+      background: transparent;
+    }
+
+    .back-profile-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 1.15rem;
+      color: #1a1a1a;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s ease, transform 0.2s ease;
+    }
+
+    .back-profile-link i {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+
+    .back-profile-link:hover {
+      color: var(--brand);
+      transform: translateX(-4px);
+    }
+
+    .swal2-custom-font {
+      font-family: 'DM Sans', sans-serif !important;
+      border-radius: 16px !important;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="top-left-clean-nav">
+    <a onclick="smoothNavigateUrl(event, 'Home.html')" class="back-profile-link">
+      <i class="ph ph-arrow-left"></i> Kembali ke Profil
+    </a>
+  </div>
+
+  <div class="profile-banner">
+    <div class="profile-banner-overlay"></div>
+  </div>
+
+  <div class="profile-wrapper">
+
+    <div class="profile-card">
+      <div class="avatar-wrapper">
+        <img id="profileAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=256"
+          alt="Avatar">
+
+        <button type="button" class="avatar-edit-btn" onclick="document.getElementById('avatarInput').click()">
+          <i class="ph ph-pencil-simple"></i>
+        </button>
+
+        <input type="file" id="avatarInput" accept="image/*" style="display: none;" onchange="changeAvatar(event)">
+      </div>
+      <h2 class="profile-name" id="profile-display-name">eko</h2>
+      <p class="profile-handle" id="profile-display-handle">@eko_traveler</p>
+    </div>
+
+    <div class="profile-menu-grid">
+
+      <div class="profile-menu-card">
+        <h3>Pengaturan Akun</h3>
+        <div class="menu-item-list">
+
+          <a onclick="smoothNavigateUrl(event, 'profile_info.html')" class="menu-item-row">
+            <div class="left"><i class="ph-fill ph-user"></i> Informasi Pribadi</div>
+            <div class="right"><i class="ph ph-caret-right"></i></div>
+          </a>
+
+          <a onclick="smoothNavigateUrl(event, 'profile_notif.html')" class="menu-item-row">
+            <div class="left"><i class="ph-fill ph-bell"></i> Notifikasi</div>
+            <div class="right"><i class="ph ph-caret-right"></i></div>
+          </a>
+
+          <a onclick="smoothNavigateUrl(event, 'profile_security.html')" class="menu-item-row">
+            <div class="left"><i class="ph-fill ph-shield-check"></i> Keamanan & Privasi</div>
+            <div class="right"><i class="ph ph-caret-right"></i></div>
+          </a>
+
+        </div>
+      </div>
+
+      <div class="profile-menu-card">
+        <h3>Dukungan & Akses</h3>
+        <div class="menu-item-list">
+
+          <a onclick="smoothNavigateUrl(event, 'profile_faq.html')" class="menu-item-row">
+            <div class="left"><i class="ph-fill ph-question"></i> Pusat Bantuan (FAQ)</div>
+            <div class="right"><i class="ph ph-caret-right"></i></div>
+          </a>
+
+          <a onclick="smoothNavigateUrl(event, 'profile_cs.html')" class="menu-item-row">
+            <div class="left"><i class="ph-fill ph-headset"></i> Hubungi CS</div>
+            <div class="right"><i class="ph ph-caret-right"></i></div>
+          </a>
+
+          <a onclick="logoutAccount(event)" class="menu-item-row logout">
+            <div class="left"><i class="ph-fill ph-sign-out"></i> Keluar Akun</div>
+            <div class="right"><i class="ph ph-caret-right"></i></div>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="Home.js"></script>
+</body>
+
+</html>

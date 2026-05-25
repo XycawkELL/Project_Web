@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TemuTrip — Jelajahi Keindahan Indonesia</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="Home.css">
+
+  <style>
+    /* Efek Muncul Halus saat kembali dari Profil */
+    body {
+      animation: fadeIn 0.4s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container">
+      <a href="#" class="brand-logo"
+        style="display: flex; align-items: center; gap: 14px; font-weight: 700; font-size: 1.5rem;">
+        <img src="gambar/temutrip_logo.svg" alt="Logo TemuTrip" style="height: 60px; width: auto; object-fit: contain;">
+        TemuTrip
+      </a>
+
+      <div class="nav-menu">
+        <button onclick="showPage('home')" class="nav-btn active" data-target="home">Beranda</button>
+        <button onclick="showPage('destinations')" class="nav-btn" data-target="destinations">Destinasi</button>
+        <button onclick="showPage('favorites')" class="nav-btn" data-target="favorites">
+          Favorit <span id="fav-badge" class="badge-nav badge-hidden">0</span>
+        </button>
+        <button onclick="showPage('about')" class="nav-btn" data-target="about">Tentang</button>
+      </div>
+      <div class="nav-actions">
+        <!-- Pindah ke profil -->
+        <a href="profile.html" class="profile-btn-nav">
+        <img id="navProfileAvatar" src="images/default-avatar.png" class="nav-profile-img" alt="User Profile">
+        </a>
+      </div>
+      <button class="mobile-burger" onclick="toggleMobileMenu()">
+        <i class="ph ph-list"></i>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-overlay" id="mobileMenu">
+    <button class="mobile-close-btn" onclick="toggleMobileMenu()">✕</button>
+    <a href="#home" class="mobile-nav-link" onclick="showPage('home'); toggleMobileMenu()">Beranda</a>
+    <a href="#destinations" class="mobile-nav-link" onclick="showPage('destinations'); toggleMobileMenu()">Destinasi</a>
+    <a href="#favorites" class="mobile-nav-link" onclick="showPage('favorites'); toggleMobileMenu()">Favorit</a>
+    <a href="#about" class="mobile-nav-link" onclick="showPage('about'); toggleMobileMenu()">Tentang</a>
+    <a href="profile.html" class="mobile-nav-link">Profil Saya</a>
+  </div>
+
+  <main id="main-content">
+    
+    <div id="page-home" class="page-section page-active">
+      <div class="hero-wrapper">
+        <section class="hero">
+          <div id="hero-slider" class="hero-slider-bg"></div>
+          <div class="hero-overlay"></div>
+
+          <button class="hero-arrow hero-arrow-left" onclick="changeHeroSlide(-1)">
+            <i class="ph-bold ph-caret-left"></i>
+          </button>
+          <button class="hero-arrow hero-arrow-right" onclick="changeHeroSlide(1)">
+            <i class="ph-bold ph-caret-right"></i>
+          </button>
+          
+          <div class="hero-content">
+            <span class="hero-tagline">Selamat Datang di TemuTrip</span>
+            <h1 class="hero-title">Temukan Surga <span>Tersembunyi</span> Indonesia.</h1>
+            <p class="hero-desc">Ribuan destinasi menakjubkan menantimu. Dari Sabang sampai Merauke, buat cerita perjalananmu sendiri.</p>
+            
+            <div class="search-bar-home">
+              <i class="ph ph-magnifying-glass"></i>
+              <input type="text" id="heroSearch" placeholder="Mau ke mana hari ini?" oninput="syncSearch(this.value)">
+              <button onclick="showPage('destinations')">Cari</button>
+            </div>
+
+            <div class="mood-pills">
+              <button onclick="filterMood('healing'); showPage('destinations')" class="mood-pill"> Healing</button>
+              <button onclick="filterMood('adventure'); showPage('destinations')" class="mood-pill"> Adventure</button>
+              <button onclick="filterMood('culture'); showPage('destinations')" class="mood-pill"> Culture</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="trending-section">
+        <div class="container">
+          <div class="section-title">Sedang Trending </div>
+          <div class="section-subtitle">Destinasi paling banyak dicari minggu ini.</div>
+          
+          <div class="slider-container">
+            <button onclick="slideTrending('left')" class="slider-arrow slider-arrow-left">
+              <i class="ph-bold ph-caret-left"></i>
+            </button>
+            <div class="trending-track no-scrollbar" id="trendingRow"></div>
+            <button onclick="slideTrending('right')" class="slider-arrow slider-arrow-right">
+              <i class="ph-bold ph-caret-right"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="home-section container">
+        <div class="section-title">Destinasi Populer</div>
+        <div class="section-subtitle">Pilihan terbaik untuk liburan Anda selanjutnya.</div>
+        <div class="dest-grid" id="featuredGrid"></div>
+      </section>
+    </div>
+
+    <div id="page-destinations" class="page-section">
+      <div class="container">
+        <div class="destinations-header">
+          <h1>Jelajahi Nusantara</h1>
+          <p>Temukan destinasi impianmu dari seluruh penjuru Indonesia.</p>
+        </div>
+
+        <div class="toolbar">
+          <div class="toolbar-search">
+            <i class="ph ph-magnifying-glass"></i>
+            <input type="text" id="destSearch" placeholder="Cari destinasi, kota, atau kategori..." oninput="liveSearch(this.value); syncSearch(this.value)">
+          </div>
+          <div class="toolbar-filters">
+            <select onchange="filterRating(this.value)">
+              <option value="all">Semua Rating</option>
+              <option value="4.9">⭐ 4.9+</option>
+              <option value="4.8">⭐ 4.8+</option>
+              <option value="4.5">⭐ 4.5+</option>
+            </select>
+            <select onchange="filterSort(this.value)">
+              <option value="default">Urutkan</option>
+              <option value="popular">Paling Populer</option>
+              <option value="rating">Rating Tertinggi</option>
+              <option value="name">Nama (A-Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-chips no-scrollbar">
+          <button class="filter-chip active" onclick="filterMood('all', this)">Semua</button>
+          <button class="filter-chip" onclick="filterMood('healing', this)"> Healing</button>
+          <button class="filter-chip" onclick="filterMood('adventure', this)"> Adventure</button>
+          <button class="filter-chip" onclick="filterMood('culture', this)"> Culture</button>
+          <button class="filter-chip" onclick="filterMood('romantic', this)"> Romantic</button>
+          <button class="filter-chip" onclick="filterMood('aesthetic', this)"> Aesthetic</button>
+          <button class="filter-chip" onclick="filterMood('fun', this)"> Fun</button>
+        </div>
+
+        <div class="dest-grid" id="allGrid"></div>
+        
+        <div id="noResult" class="no-result result-hidden">
+          <i class="ph ph-magnifying-glass"></i>
+          <h3>Tidak Ditemukan</h3>
+          <p>Coba gunakan kata kunci atau filter lain.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-favorites" class="page-section container">
+      <div class="favorites-header">
+        <div>
+          <h1>Favorit Saya</h1>
+          <p class="section-subtitle">Destinasi impian yang sudah Anda simpan.</p>
+        </div>
+        <button onclick="showPage('destinations')" class="add-more-btn">Tambah Lagi +</button>
+      </div>
+
+      <div id="favEmpty" class="fav-empty result-hidden">
+        <i class="ph-fill ph-bookmarks"></i>
+        <h3>Belum ada favorit</h3>
+        <p>Klik ikon pita pada kartu destinasi untuk menyimpannya di sini.</p>
+        <button onclick="showPage('destinations')">Jelajahi Destinasi</button>
+      </div>
+
+      <div class="dest-grid" id="favGrid"></div>
+    </div>
+
+    <div id="page-about" class="page-section">
+      <div class="about-hero">
+        <h1>Mengenal TemuTrip</h1>
+        <p>Platform perjalanan terpercaya yang didedikasikan untuk mengangkat pesona wisata dan budaya Nusantara ke mata dunia.</p>
+      </div>
+
+      <div class="about-wrapper">
+        <div class="about-cards">
+          <div class="about-card">
+            <div class="about-card-icon"><i class="ph-fill ph-target"></i></div>
+            <h3>Misi Kami</h3>
+            <p>Memperkenalkan keindahan alam Indonesia dan mendorong ekosistem pariwisata yang berkelanjutan bagi komunitas lokal.</p>
+          </div>
+          <div class="about-card">
+            <div class="about-card-icon"><i class="ph-fill ph-shield-check"></i></div>
+            <h3>Kurasi Ketat</h3>
+            <p>Setiap destinasi direview oleh ahli lokal untuk memastikan akurasi, keamanan, dan pengalaman terbaik untuk Anda.</p>
+          </div>
+          <div class="about-card">
+            <div class="about-card-icon"><i class="ph-fill ph-users-three"></i></div>
+            <h3>Komunitas</h3>
+            <p>Tumbuh bersama 50.000+ traveler se-Indonesia yang aktif membagikan cerita dan inspirasi perjalanan jujur.</p>
+          </div>
+          <div class="about-card">
+            <div class="about-card-icon"><i class="ph-fill ph-plant"></i></div>
+            <h3>Green Tourism</h3>
+            <p>Mendukung destinasi ramah lingkungan dan kampanye bebas sampah plastik di seluruh wilayah wisata.</p>
+          </div>
+        </div>
+
+        <section class="team-section">
+          <h2>Tim di Balik Layar</h2>
+          <div class="team-grid">
+            <div class="team-item">
+              <img src="https://i.pravatar.cc/200?img=11" alt="Andi">
+              <h4>Andi Saputra</h4>
+              <p>Founder & CEO</p>
+            </div>
+            <div class="team-item">
+              <img src="https://i.pravatar.cc/200?img=25" alt="Sari">
+              <h4>Sari Dewi</h4>
+              <p>Head of Content</p>
+            </div>
+            <div class="team-item">
+              <img src="https://i.pravatar.cc/200?img=33" alt="Budi">
+              <h4>Budi Santoso</h4>
+              <p>Lead Developer</p>
+            </div>
+            <div class="team-item">
+              <img src="https://i.pravatar.cc/200?img=44" alt="Rina">
+              <h4>Rina Kusuma</h4>
+              <p>Design Lead</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <i class="ph-fill ph-paper-plane-tilt footer-logo-accent"></i> TemuTrip
+        </div>
+        <p class="footer-desc">Platform perjalanan terpercaya untuk menjelajahi keindahan Nusantara. Dibuat dengan cinta untuk pariwisata lokal.</p>
+        <div class="footer-socials">
+          <a href="#"><i class="ph-fill ph-instagram-logo"></i></a>
+          <a href="#"><i class="ph-fill ph-twitter-logo"></i></a>
+          <a href="#"><i class="ph-fill ph-youtube-logo"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Jelajahi</h4>
+        <div class="footer-links">
+          <a href="#" onclick="showPage('destinations')">Destinasi Populer</a>
+          <a href="#">Wisata Tersembunyi</a>
+          <a href="#">Wisata Budaya</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Informasi</h4>
+        <div class="footer-links">
+          <a href="#" onclick="showPage('about')">Tentang Kami</a>
+          <a href="#">Blog Perjalanan</a>
+          <a href="#">Panduan Wisata</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Bantuan</h4>
+        <div class="footer-links">
+          <a href="#">Pusat Bantuan (FAQ)</a>
+          <a href="#">Hubungi Kami</a>
+          <a href="#">Syarat & Ketentuan</a>
+        </div>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <div class="left">&copy; 2026 TemuTrip Indonesia. Hak Cipta Dilindungi.</div>
+      <div class="right">Dibuat di Nusantara</div>
+    </div>
+  </footer>
+
+<style>
+    .modal-content {
+      border-radius: 24px !important;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.15) !important;
+    }
+    .modal-quick-info {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .modal-quick-info:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.06);
+    }
+    .modal-btn-outline:hover {
+      border-color: #2F5C4B !important;
+      color: #2F5C4B !important;
+      background: #f0f5f3 !important;
+    }
+    .modal-btn-solid:hover {
+      background: #1e3d32 !important;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(47, 92, 75, 0.25);
+    }
+  </style>
+
+  <div id="modal-backdrop" class="modal-backdrop" onclick="closeModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      
+      <div class="modal-media">
+        <img id="modal-img" src="" alt="Detail">
+        <div class="modal-media-overlay"></div>
+        <span id="modal-mood-badge" class="modal-media-badge" style="box-shadow: 0 4px 10px rgba(0,0,0,0.2);"><i class="ph-fill ph-sparkle"></i> Kategori</span>
+      </div>
+      
+      <div class="modal-details" style="padding: 35px 30px; display: flex; flex-direction: column; justify-content: space-between;">
+        <button onclick="closeModal()" class="modal-close-btn" style="top: 20px; right: 20px; background: #f8f9fa; border-radius: 50%;"><i class="ph-bold ph-x"></i></button>
+        
+        <div>
+          <div class="modal-header-info">
+            <h2 id="modal-title" style="font-family: 'Playfair Display', serif; color: #1a1a1a; margin-bottom: 8px; font-size: 2rem;">Nama Tempat</h2>
+            <div style="display: flex; align-items: center; gap: 12px; color: #666; font-size: 0.95rem;">
+              <span id="modal-loc" class="modal-loc"><i class="ph-fill ph-map-pin"></i> Lokasi</span>
+              <span style="color: #ddd;">|</span>
+              <span style="color: #eab308; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+                <i class="ph-fill ph-star"></i> 4.9 <span style="color: #999; font-weight: 400; font-size: 0.85rem;">(2k+ Ulasan)</span>
+              </span>
+            </div>
+          </div>
+
+          <h4 class="modal-desc-title" style="font-size: 1.1rem; color: #1a1a1a; margin-top: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
+            <i class="ph-fill ph-info"></i> Tentang Destinasi
+          </h4>
+          <p id="modal-desc" class="modal-desc">Deskripsi panjang destinasi.</p>
+        </div>
+        
+        <div class="modal-actions" style="margin-top: 20px; display: flex; gap: 12px;">
+          <button id="modal-fav-btn" onclick="toggleFavFromModal()" class="save-btn modal-btn-outline" style="flex: 1; padding: 14px; border: 2px solid #e0e0e0; background: white; color: #444; border-radius: 14px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="ph-bold ph-bookmark-simple" style="font-size: 1.2rem;"></i> Favorit
+          </button>
+          <button class="maps-btn modal-btn-solid" onclick="bukaGoogleMapsKeBrowser()" style="flex: 2; padding: 14px; background: #2F5C4B; color: white; border: none; border-radius: 14px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px;">
+            <i class="ph-bold ph-map-trifold" style="font-size: 1.2rem;"></i> Buka di Maps
+        </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <button id="scrollToTopBtn" onclick="scrollToTop()" class="scroll-to-top"><i class="ph-bold ph-arrow-up"></i></button>
+  <div id="toast-container"></div>
+
+  <script src="data.js"></script>
+  <script src="Home.js"></script>
+</body>
+</html>

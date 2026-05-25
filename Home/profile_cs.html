@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hubungi Customer Service — TemuTrip</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="Home.css">
+
+  <style>
+    body {
+      animation: fadeIn 0.4s ease-in-out forwards;
+      background-color: #f8f9fa;
+    }
+    .fade-out {
+      animation: fadeOut 0.4s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .back-btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #1a1a1a;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      transition: transform 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+    }
+    .back-btn-nav:hover {
+      color: #2F5C4B; 
+      transform: translateX(-5px); 
+    }
+
+    .feature-container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .feature-header {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+    
+    .feature-header h2 {
+      font-family: 'Playfair Display', serif;
+      color: #2F5C4B;
+    }
+
+    .cs-card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      text-decoration: none;
+      color: #333;
+      transition: all 0.2s ease;
+    }
+
+    .cs-card:hover {
+      border-color: #2F5C4B;
+      background: #fdfdfd;
+      transform: translateY(-2px);
+    }
+
+    .cs-icon {
+      background: #EAF2EE;
+      color: #2F5C4B;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+    }
+
+    .cs-info h4 {
+      margin: 0 0 4px 0;
+    }
+    .cs-info p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container" style="justify-content: flex-start;">
+      <a onclick="smoothNavigateUrl(event, 'profile.html')" class="back-btn-nav">
+        <i class="ph-bold ph-arrow-left" style="font-size: 1.4rem;"></i> Kembali ke Profil
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="feature-container">
+      <div class="feature-header">
+        <h2>Hubungi CS</h2>
+        <p>Butuh bantuan lebih lanjut atau ingin menyampaikan kendala teknis? Hubungi kami langsung.</p>
+      </div>
+      
+      <a href="https://wa.me/6285878477506?text=Halo%20Tim%20Support%20TemuTrip,%20saya%20butuh%20bantuan%20terkait%20kendala%20di%20aplikasi." target="_blank" class="cs-card">
+        <div class="cs-icon"><i class="ph-bold ph-whatsapp-logo"></i></div>
+        <div class="cs-info">
+          <h4>WhatsApp Chat Support</h4>
+          <p>Respons kilat dari admin dalam waktu 5-10 menit (Jam Kerja 08.00 - 17.00).</p>
+        </div>
+      </a>
+
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=541251057@student.smktelkom-pwt.sch.id&su=Pelaporan%20Kendala%20-%20TemuTrip&body=Halo%20Tim%20Support%20TemuTrip,%0A%0ASaya%20ingin%20melaporkan%20kendala%20sebagai%20berikut:%0A%0A[Tulis%20kendala%20kamu%20di%20sini]%0A%0ATerima%20kasih." target="_blank" class="cs-card">
+        <div class="cs-icon"><i class="ph-bold ph-envelope"></i></div>
+        <div class="cs-info">
+          <h4>Email Support</h4>
+          <p>Kirimkan kendala resmi kamu ke email (Maksimal 1x24 jam).</p>
+        </div>
+      </a>
+
+      <div style="text-align: center; margin-top: 30px; color: #aaa; font-size: 0.8rem;">
+        TemuTrip Support Team — Selalu Ada untuk Menemani Perjalananmu.
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function smoothNavigateUrl(event, url) {
+      event.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => { window.location.href = url; }, 350);
+    }
+  </script>
+</body>
+</html>
