@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pusat Bantuan (FAQ) — TemuTrip</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <link rel="stylesheet" href="Home.css">
+
+  <style>
+    body {
+      animation: fadeIn 0.4s ease-in-out forwards;
+      background-color: #f8f9fa;
+    }
+    .fade-out {
+      animation: fadeOut 0.4s ease-in-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    .back-btn-nav {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #1a1a1a;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      transition: transform 0.2s ease, color 0.2s ease;
+      cursor: pointer;
+    }
+    .back-btn-nav:hover {
+      color: #2F5C4B; 
+      transform: translateX(-5px); 
+    }
+
+    .feature-container {
+      max-width: 650px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    
+    .feature-header {
+      margin-bottom: 30px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 15px;
+    }
+    
+    .feature-header h2 {
+      font-family: 'Playfair Display', serif;
+      color: #2F5C4B;
+    }
+
+    .faq-item {
+      margin-bottom: 15px;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      background: #fafafa;
+      padding: 15px;
+      font-weight: 600;
+      color: #333;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s ease;
+    }
+    
+    .faq-question:hover {
+      background: #f0f5f3;
+    }
+
+    .faq-answer {
+      padding: 15px;
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      background: #fff;
+      border-top: 1px solid #eee;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="container nav-container" style="justify-content: flex-start;">
+      <a onclick="smoothNavigateUrl(event, 'profile.html')" class="back-btn-nav">
+        <i class="ph-bold ph-arrow-left" style="font-size: 1.4rem;"></i> Kembali ke Profil
+      </a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="feature-container">
+      <div class="feature-header">
+        <h2>Pusat Bantuan (FAQ)</h2>
+        <p>Punya pertanyaan? Temukan jawaban cepat seputar penggunaan TemuTrip di sini.</p>
+      </div>
+      
+      <div class="faq-item">
+        <div class="faq-question">Apa itu TemuTrip? <i class="ph ph-caret-down"></i></div>
+        <div class="faq-answer">TemuTrip adalah platform rekomendasi perjalanan terpercaya khusus untuk mengeksplorasi keindahan alam, wisata, dan budaya di seluruh penjuru Indonesia.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Apakah TemuTrip melayani pemesanan tiket pesawat atau hotel? <i class="ph ph-caret-down"></i></div>
+        <div class="faq-answer">Untuk Saat ini TemuTrip fokus sebagai platform <strong>inspirasi dan rekomendasi destinasi wisata</strong>.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bagaimana cara memfilter destinasi sesuai "Mood" liburan saya? <i class="ph ph-caret-down"></i></div>
+        <div class="faq-answer">Di halaman Beranda maupun halaman Destinasi, Anda dapat mengklik tombol <em>Filter Mood</em> (seperti Healing, Adventure, Culture, atau Fun). Sistem kami akan secara otomatis memunculkan tempat-tempat yang paling pas dengan suasana hati Anda.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Bagaimana cara menyimpan destinasi impian ke Favorit? <i class="ph ph-caret-down"></i></div>
+        <div class="faq-answer">Sangat mudah! Anda tinggal mengklik <strong>ikon pita (bookmark)</strong> yang ada di sudut setiap kartu destinasi, atau di dalam pop-up detail destinasi. Tempat tersebut akan otomatis tersimpan di halaman 'Favorit Saya'.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Apakah saya bisa menambahkan destinasi baru yang belum ada di TemuTrip? <i class="ph ph-caret-down"></i></div>
+        <div class="faq-answer">Tentu saja! Kami sangat mengapresiasi kontribusi komunitas <em>traveler</em>. Anda dapat menghubungi tim CS kami melalui menu <strong>Hubungi CS</strong> dengan menyertakan foto dan deskripsi tempat tersebut untuk direview oleh kurator lokal kami.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Mengapa pendaftaran email dikunci menggunakan domain institusi/Gmail? <i class="ph ph-caret-down"></i></div>
+        <div class="faq-answer">Kami membatasi pendaftaran email demi menjaga komunitas yang aman, meminimalisir akun spam, dan memastikan integrasi keamanan notifikasi perjalanan Anda lebih stabil.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question">Apakah aplikasi TemuTrip berbayar? <i class="ph ph-caret-down"></i></div>
+        <div class="faq-answer">Tidak. TemuTrip <strong>100% gratis</strong> untuk digunakan oleh seluruh masyarakat yang ingin mengeksplorasi keindahan Nusantara tanpa batas.</div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Fungsi Transisi Halaman
+    function smoothNavigateUrl(event, url) {
+      event.preventDefault();
+      document.body.classList.add('fade-out');
+      setTimeout(() => { window.location.href = url; }, 350);
+    }
+    
+    // Script Interaktif Buka-Tutup (Accordion) FAQ
+    document.querySelectorAll('.faq-question').forEach(item => {
+      item.addEventListener('click', () => {
+        const answer = item.nextElementSibling;
+        const icon = item.querySelector('i');
+        
+        // Cek apakah sedang terbuka atau tertutup
+        if (answer.style.display === 'block') {
+          answer.style.display = 'none';
+          icon.className = 'ph ph-caret-down';
+        } else {
+          // Opsional: Tutup jawaban lain yang sedang terbuka (agar lebih rapi)
+          document.querySelectorAll('.faq-answer').forEach(ans => ans.style.display = 'none');
+          document.querySelectorAll('.faq-question i').forEach(icn => icn.className = 'ph ph-caret-down');
+          
+          answer.style.display = 'block';
+          icon.className = 'ph ph-caret-up';
+        }
+      });
+      // Sembunyikan semua jawaban saat halaman pertama dimuat
+      item.nextElementSibling.style.display = 'none';
+    });
+  </script>
+</body>
+</html>
