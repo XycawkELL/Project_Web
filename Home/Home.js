@@ -8,10 +8,10 @@ let activeModalId = null;
 
 // Daftar gambar untuk Slider Hero Banner
 const heroBgImages = [
-  'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1600&q=80', // Bali
-  'https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1600&q=80', // Labuan Bajo
-  'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&w=1600&q=80', // Danau Toba
-  'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=1600&q=80'  // Gunung Bromo
+  'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=1600&q=80', 
+  'https://images.unsplash.com/photo-1516690561799-46d8f74f9abf?auto=format&fit=crop&w=1600&q=80', 
+  'https://images.unsplash.com/photo-1588668214407-6ea9a6d8c272?auto=format&fit=crop&w=1600&q=80', 
+  'https://images.unsplash.com/photo-1552733407-5d5c46c3bb3b?auto=format&fit=crop&w=1600&q=80'  
 ];
 let currentHeroSlide = 0;
 let heroSlideInterval;
@@ -29,9 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage(hash);
   }
 
-  // =========================================================================
-  // SINKRONISASI OTOMATIS NAMA, HANDLE, DAN SEMUA FOTO PROFIL (HOME & PROFILE)
-  // =========================================================================
+  // SINKRONISASI OTOMATIS PROFIL
   const displayName = document.getElementById("profile-display-name");
   if (displayName && localStorage.getItem("p_name")) {
     displayName.textContent = localStorage.getItem("p_name");
@@ -45,15 +43,12 @@ document.addEventListener('DOMContentLoaded', () => {
   
   const savedAvatar = localStorage.getItem("user_avatar");
   if (savedAvatar) {
-    // 1. Update gambar di halaman profil utama
     const profileImg = document.getElementById("profileAvatar");
     if (profileImg) profileImg.src = savedAvatar;
     
-    // 2. Update gambar di pojok kanan atas navbar (Halaman Beranda / Home.html)
     const navProfileImg = document.getElementById("navProfileAvatar");
     if (navProfileImg) navProfileImg.src = savedAvatar;
 
-    // 3. Cadangan otomatis jika lo menggunakan class di elemen gambar navbar lo
     document.querySelectorAll(".nav-profile-img, .navbar-avatar").forEach(img => {
       img.src = savedAvatar;
     });
@@ -140,12 +135,14 @@ function toggleMobileMenu() {
 // --- HTML RENDERERS ---
 function createCardHTML(dest, delayIndex = 0) {
   const isFav = favorites.includes(dest.id);
+  // Modifikasi: Mengubah koma menjadi titik peluru (bullet) yang estetik
+  const displayMood = dest.mood.replace(/,/g, ' • ');
   return `
     <div class="dest-card" onclick="openModal(${dest.id})">
       <div class="dest-card-img-wrap">
         <img src="${dest.img}" alt="${dest.name}" class="dest-card-img" loading="lazy">
         <div class="dest-card-overlay"></div>
-        <span class="dest-card-tag">${dest.mood}</span>
+        <span class="dest-card-tag">${displayMood}</span>
         <button class="dest-card-fav ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation(); toggleFav(${dest.id})">
           <i class="${isFav ? 'ph-fill' : 'ph'} ph-bookmark-simple"></i>
         </button>
@@ -175,6 +172,7 @@ function createTrendingHTML(dest, index) {
   `;
 }
 
+// --- SLIDER TRENDING ---
 function slideTrending(direction) {
   const row = document.getElementById('trendingRow');
   if(!row) return;
@@ -206,7 +204,12 @@ function renderAllDestinations() {
       d.mood.toLowerCase().includes(searchQuery)
     );
   }
-  if (currentMood !== 'all') filtered = filtered.filter(d => d.mood === currentMood);
+  
+  // Modifikasi: Menggunakan .includes() agar bisa membaca gabungan genre
+  if (currentMood !== 'all') {
+    filtered = filtered.filter(d => d.mood.toLowerCase().includes(currentMood.toLowerCase()));
+  }
+  
   if (ratingFilter !== 'all') filtered = filtered.filter(d => d.rating >= parseFloat(ratingFilter));
   
   if (sortMode === 'rating') filtered.sort((a,b) => b.rating - a.rating);
@@ -266,14 +269,7 @@ function filterMood(mood, btnElement = null) {
   renderAllDestinations();
 }
 
-function filterRating(val) { ratingFilter = val; renderAllDestinations(); }
-function filterSort(val) { sortMode = val; renderAllDestinations(); }
-
-// =========================================================================
-// FITUR SAVING DATA SWITCH & POP-UP NOTIFIKASI TEMA HIJAU (#2F5C4B)
-// =========================================================================
-
-// A. Otomatis membaca status aktif/tidaknya switch toggle saat halaman dimuat
+// --- SETTING NOTIFIKASI PROFILE ---
 document.addEventListener("DOMContentLoaded", function() {
   const checkWisata = document.getElementById("toggleWisata");
   const checkAkun = document.getElementById("toggleAkun");
@@ -288,52 +284,39 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 
-// B. Menyimpan status switch toggle terbaru dan memicu pop-up animasi mewah
 function saveNotificationSettings() {
   const checkWisata = document.getElementById("toggleWisata");
   const checkAkun = document.getElementById("toggleAkun");
 
   if (checkWisata && checkAkun) {
-    // Simpan data switch ke memori browser lokal agar permanen berfungsi ke sistem
     localStorage.setItem("notif_wisata", checkWisata.checked);
     localStorage.setItem("notif_akun", checkAkun.checked);
   }
 
-  // Tampilkan pop-up animasi sukses mewah dengan warna tombol hijau utama lo
   Swal.fire({
     icon: 'success',
     title: 'Pengaturan Disimpan!',
     text: 'Pengaturan notifikasi berhasil disimpan!',
     confirmButtonColor: '#2F5C4B', 
     background: '#ffffff',
-    customClass: {
-      popup: 'swal2-custom-font'
-    }
+    customClass: { popup: 'swal2-custom-font' }
   }).then((result) => {
     if (result.isConfirmed) {
-      // Menjalankan animasi transisi keluar halaman bawaan lo secara mulus
       document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = 'profile.html';
-      }, 350);
+      setTimeout(() => { window.location.href = 'profile.html'; }, 350);
     }
   });
 }
 
-// =========================================================================
-// PERBAIKAN ANIMASI TOAST NOTIFIKASI FAVORIT AGAR SELALU TAMPIL DI DEPAN
-// =========================================================================
 function showToast(message, type = 'success') {
   let container = document.getElementById('toast-container');
-  
-  // Buat wadah utama jika belum ada (ditambah CSS Garansi Tampil)
   if (!container) {
     container = document.createElement('div');
     container.id = 'toast-container';
     container.style.position = 'fixed';
     container.style.bottom = '30px';
     container.style.right = '30px';
-    container.style.zIndex = '999999'; // Super tinggi agar di atas Modal 
+    container.style.zIndex = '999999'; 
     container.style.display = 'flex';
     container.style.flexDirection = 'column';
     container.style.gap = '12px';
@@ -341,11 +324,8 @@ function showToast(message, type = 'success') {
     document.body.appendChild(container);
   }
 
-  // Buat elemen pop-up toastnya
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-  
-  // Desain Inline CSS untuk Pop-up (Bebas dari pengaruh CSS luar)
   toast.style.background = '#ffffff';
   toast.style.color = '#1a1a1a';
   toast.style.padding = '14px 24px';
@@ -357,8 +337,8 @@ function showToast(message, type = 'success') {
   toast.style.fontFamily = "'DM Sans', sans-serif";
   toast.style.fontSize = '0.95rem';
   toast.style.fontWeight = '500';
-  toast.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; // Animasi memantul (bounce)
-  toast.style.transform = 'translateY(100px)'; // Mulai dari bawah layar
+  toast.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)'; 
+  toast.style.transform = 'translateY(100px)'; 
   toast.style.opacity = '0';
 
   const iconColor = type === 'success' ? '#2F5C4B' : '#64748b';
@@ -368,16 +348,13 @@ function showToast(message, type = 'success') {
     <i class="${iconClass}" style="font-size: 1.5rem; color: ${iconColor};"></i>
     <span>${message}</span>
   `;
-
   container.appendChild(toast);
 
-  // Trigger Animasi Masuk (Pop-up muncul)
   setTimeout(() => {
     toast.style.transform = 'translateY(0)';
     toast.style.opacity = '1';
   }, 10);
 
-  // Trigger Animasi Keluar (Pop-up menghilang setelah 3 detik)
   setTimeout(() => {
     toast.style.opacity = '0';
     toast.style.transform = 'translateX(50px)';
@@ -388,7 +365,6 @@ function showToast(message, type = 'success') {
 // --- FAVORITES LOGIC ---
 function toggleFav(id) {
   const targetId = parseInt(id);
-
   if (favorites.includes(targetId)) {
     favorites = favorites.filter(favId => favId !== targetId);
     showToast(`Dihapus dari favorit`, 'info');
@@ -415,7 +391,6 @@ function toggleFav(id) {
   if (favPage && favPage.classList.contains('page-active')) {
     renderFavorites();
   }
-  
   if (activeModalId === targetId) updateModalFavBtn();
 }
 
@@ -430,23 +405,47 @@ function updateFavBadge() {
   }
 }
 
-// --- MODAL LOGIC ---
+// --- MODAL LOGIC (TRICK SAKTI: MELEBUR BARIS & MENAMPILKAN MULTI-GENRE ESTETIK) ---
 function openModal(id) {
   const d = destinations.find(x => x.id === id);
   if (!d) return;
   activeModalId = id;
 
-  document.getElementById('modal-img').src = d.img;
-  document.getElementById('modal-mood-badge').textContent = d.mood;
-  document.getElementById('modal-title').textContent = d.name;
+  if (document.getElementById('modal-img')) document.getElementById('modal-img').src = d.img;
   
-  document.getElementById('modal-loc').innerHTML = `<i class="ph-fill ph-map-pin"></i> ${d.loc}  •  <i class="ph-fill ph-star" style="color: var(--accent);"></i> <strong style="color: var(--ink);">${d.rating}</strong>`;
-  document.getElementById('modal-desc').textContent = d.desc;
+  // Modifikasi: Mengembalikan icon bintang kilau di depan multi-genre
+  if (document.getElementById('modal-mood-badge')) {
+    const displayMood = d.mood.replace(/,/g, ' • ');
+    document.getElementById('modal-mood-badge').innerHTML = `<i class="ph-fill ph-sparkle"></i> ${displayMood}`;
+  }
   
+  if (document.getElementById('modal-title')) document.getElementById('modal-title').textContent = d.name;
+  if (document.getElementById('modal-desc')) document.getElementById('modal-desc').textContent = d.desc;
+  
+  let totalUlasanLokal = d.popular ? (d.popular * 24).toString() : "2400";
+  if (parseInt(totalUlasanLokal) > 1000) {
+    totalUlasanLokal = (parseInt(totalUlasanLokal) / 1000).toFixed(1) + "k+";
+  }
+
+  const locEl = document.getElementById('modal-loc');
+  if (locEl) {
+    const parentRow = locEl.parentElement;
+    if (parentRow) {
+      parentRow.innerHTML = `
+        <span id=\"modal-loc\" class=\"modal-loc\"><i class=\"ph-fill ph-map-pin\"></i> ${d.loc}</span>
+        <span style=\"color: #ddd;\">|</span>
+        <span style=\"color: #eab308; font-weight: 700; display: flex; align-items: center; gap: 4px;\">
+          <i class=\"ph-fill ph-star\"></i> ${d.rating} 
+          <span style=\"color: #999; font-weight: 400; font-size: 0.85rem;\">(${totalUlasanLokal} Ulasan)</span>
+        </span>
+      `;
+    }
+  }
+
   updateModalFavBtn();
 
   const backdrop = document.getElementById('modal-backdrop');
-  if(backdrop) backdrop.classList.add('active');
+  if (backdrop) backdrop.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
@@ -475,7 +474,7 @@ function updateModalFavBtn() {
   }
 }
 
-// --- INTERSEPSI FORM NOTIFIKASI ---
+// --- INTERSEPSI FORM ---
 document.addEventListener("DOMContentLoaded", function() {
   const formNotif = document.querySelector("form");
   if (formNotif && !document.getElementById("profileName")) {
@@ -488,15 +487,11 @@ document.addEventListener("DOMContentLoaded", function() {
         text: 'Pengaturan notifikasi berhasil disimpan!',
         confirmButtonColor: '#2F5C4B', 
         background: '#ffffff',
-        customClass: {
-          popup: 'swal2-custom-font'
-        }
+        customClass: { popup: 'swal2-custom-font' }
       }).then((result) => {
         if (result.isConfirmed) {
           document.body.classList.add('fade-out');
-          setTimeout(() => {
-            window.location.href = 'profile.html';
-          }, 350);
+          setTimeout(() => { window.location.href = 'profile.html'; }, 350);
         }
       });
     });
@@ -507,7 +502,7 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && activeModalId) closeModal();
 });
 
-// --- ANTI LOMPAT DARI PROFILE ---
+// --- ANTI LOMPAT PROFILE ---
 document.addEventListener("DOMContentLoaded", function() {
     const targetId = sessionStorage.getItem('targetScrollSection');
     if (targetId) {
@@ -524,12 +519,10 @@ document.addEventListener("DOMContentLoaded", function() {
 function smoothNavigateUrl(event, url) {
   event.preventDefault();
   document.body.classList.add('fade-out');
-  setTimeout(() => {
-    window.location.href = url;
-  }, 350);
+  setTimeout(() => { window.location.href = url; }, 350);
 }
 
-// --- AUTO-FILL PROFILE FORM ---
+// --- AUTO-FILL PROFILE ---
 document.addEventListener("DOMContentLoaded", function() {
   if (document.getElementById("profileName")) {
     if (localStorage.getItem("p_name")) document.getElementById("profileName").value = localStorage.getItem("p_name");
@@ -555,9 +548,7 @@ function saveProfileChanges(event) {
   const city = document.getElementById('profileCity').value;
   
   let gender = "Laki-laki";
-  if (document.getElementById("genderP").checked) {
-    gender = "Perempuan";
-  }
+  if (document.getElementById("genderP").checked) gender = "Perempuan";
   
   localStorage.setItem("p_name", name);
   localStorage.setItem("p_email", email);
@@ -582,15 +573,11 @@ function saveProfileChanges(event) {
     text: "Selamat! Data diri untuk " + name + " berhasil diperbarui.",
     confirmButtonColor: '#2F5C4B', 
     background: '#ffffff',
-    customClass: {
-      popup: 'swal2-custom-font'
-    }
+    customClass: { popup: 'swal2-custom-font' }
   }).then((result) => {
     if (result.isConfirmed) {
       document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = 'profile.html';
-      }, 350);
+      setTimeout(() => { window.location.href = 'profile.html'; }, 350);
     }
   });
 }
@@ -607,32 +594,28 @@ function logoutAccount(event) {
     confirmButtonText: 'Ya, Keluar',
     cancelButtonText: 'Batal',
     background: '#ffffff',
-    customClass: {
-      popup: 'swal2-custom-font' 
-    }
+    customClass: { popup: 'swal2-custom-font' }
   }).then((result) => {
     if (result.isConfirmed) {
       document.body.classList.add('fade-out');
-      setTimeout(() => {
-        window.location.href = '../Login/Login.html'; 
-      }, 350);
+      setTimeout(() => { window.location.href = '../Login/Login.html'; }, 350);
     }
   });
 }
 
+// --- FUNGSI REDIRECT GOOGLE MAPS AKTIF DAN AKURAT 100% ---
 function bukaGoogleMapsKeBrowser() {
-  const elemenJudul = document.getElementById('modal-title');
-  const elemenLokasi = document.getElementById('modal-loc');
-  if (elemenJudul && elemenLokasi) {
-    const namaTempat = elemenJudul.textContent;
-    const namaKota = elemenLokasi.textContent;
+  const d = destinations.find(x => x.id === activeModalId);
+  if (d) {
+    const namaTempat = d.name.trim();
+    const namaKota = d.loc.trim();
     const kueriPencarian = encodeURIComponent(namaTempat + ', ' + namaKota);
+    
     const urlResmiMaps = 'https://www.google.com/maps/search/?api=1&query=' + kueriPencarian;
     window.open(urlResmiMaps, '_blank');
   }
 }
 
-// --- LOGIKA UTK FITUR PROSES GANTI FOTO PROFIL (AVATAR) ---
 function changeAvatar(event) {
   const file = event.target.files[0];
   if (!file) return;
@@ -657,7 +640,6 @@ function changeAvatar(event) {
       localStorage.setItem("user_avatar_" + activeUser, base64Image);
     }
     
-    // Update instan seluruh elemen avatar foto di dalam halaman ini
     const profileImg = document.getElementById("profileAvatar");
     if (profileImg) profileImg.src = base64Image;
 
