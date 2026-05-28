@@ -401,3 +401,29 @@ footer { background-color: var(--ink); color: #94a3b8; padding: 80px 0 32px; fon
   border-radius: 24px !important;
 }
 
+.modal-content {
+  border-radius: 24px !important;
+  overflow: hidden;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15) !important;
+}
+
+.modal-quick-info {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.modal-quick-info:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.06);
+}
+
+.modal-btn-outline:hover {
+  border-color: #2F5C4B !important;
+  color: #2F5C4B !important;
+  background: #f0f5f3 !important;
+}
+
+.modal-btn-solid:hover {
+  background: #1e3d32 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(47, 92, 75, 0.25);
+}

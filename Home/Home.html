@@ -251,7 +251,7 @@
     <div class="container footer-grid">
       <div class="footer-brand">
         <div class="logo">
-          <i class="ph-fill ph-paper-plane-tilt footer-logo-accent"></i> TemuTrip
+          TemuTrip
         </div>
         <p class="footer-desc">Platform perjalanan terpercaya untuk menjelajahi keindahan Nusantara. Dibuat dengan cinta untuk pariwisata lokal.</p>
         <div class="footer-socials">
@@ -290,31 +290,6 @@
       <div class="right">Dibuat di Nusantara</div>
     </div>
   </footer>
-
-<style>
-    .modal-content {
-      border-radius: 24px !important;
-      overflow: hidden;
-      box-shadow: 0 24px 48px rgba(0,0,0,0.15) !important;
-    }
-    .modal-quick-info {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .modal-quick-info:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 15px rgba(0,0,0,0.06);
-    }
-    .modal-btn-outline:hover {
-      border-color: #2F5C4B !important;
-      color: #2F5C4B !important;
-      background: #f0f5f3 !important;
-    }
-    .modal-btn-solid:hover {
-      background: #1e3d32 !important;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(47, 92, 75, 0.25);
-    }
-  </style>
 
   <div id="modal-backdrop" class="modal-backdrop" onclick="closeModal(event)">
     <div class="modal-content" onclick="event.stopPropagation()">
@@ -359,6 +334,16 @@
     </div>
   </div>
 
+  <div style="display: flex; align-items: center; gap: 12px; color: #666; font-size: 0.95rem;">
+    <span id="modal-loc" class="modal-loc"><i class="ph-fill ph-map-pin"></i> Lokasi</span>
+    <span style="color: #ddd;">|</span>
+    <span style="color: #eab308; font-weight: 700; display: flex; align-items: center; gap: 4px;">
+      <i class="ph-fill ph-star"></i>
+      <span id="modal-rating-value">4.9</span>
+      <span id="modal-review-value" style="color: #999; font-weight: 400; font-size: 0.85rem;">(2k+ Ulasan)</span>
+    </span>
+  </div>
+  
   <button id="scrollToTopBtn" onclick="scrollToTop()" class="scroll-to-top"><i class="ph-bold ph-arrow-up"></i></button>
   <div id="toast-container"></div>
 
