@@ -1,3 +1,16 @@
+// --- HELPER MULTI-ACCOUNT ---
+// Fungsi ini membantu kita mengambil data khusus untuk akun yang sedang login
+function getActiveUser() {
+  return localStorage.getItem('active_user') || 'default_user';
+}
+
+function getProfileData(key) {
+  const activeUser = getActiveUser();
+  // Prioritas 1: Cari data spesifik akun. Prioritas 2: Cari data global (cadangan)
+  return localStorage.getItem(key + "_" + activeUser) || localStorage.getItem(key);
+}
+
+
 // --- STATE MANAGEMENT ---
 let favorites = JSON.parse(localStorage.getItem('temutrip_favs')) || [];
 let currentMood = 'all';
@@ -29,19 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
     showPage(hash);
   }
 
-  // SINKRONISASI OTOMATIS PROFIL
+  // SINKRONISASI OTOMATIS PROFIL (MULTI-ACCOUNT)
+  const currentName = getProfileData("p_name");
+  
   const displayName = document.getElementById("profile-display-name");
-  if (displayName && localStorage.getItem("p_name")) {
-    displayName.textContent = localStorage.getItem("p_name");
+  if (displayName && currentName) {
+    displayName.textContent = currentName;
   }
 
   const displayHandle = document.getElementById("profile-display-handle");
-  if (displayHandle && localStorage.getItem("p_name")) {
-    const cleanHandle = localStorage.getItem("p_name").toLowerCase().replace(/\s+/g, '_');
+  if (displayHandle && currentName) {
+    const cleanHandle = currentName.toLowerCase().replace(/\s+/g, '_');
     displayHandle.textContent = `@${cleanHandle}_traveler`;
   }
   
-  const savedAvatar = localStorage.getItem("user_avatar");
+  const savedAvatar = getProfileData("user_avatar");
   if (savedAvatar) {
     const profileImg = document.getElementById("profileAvatar");
     if (profileImg) profileImg.src = savedAvatar;
@@ -522,17 +537,17 @@ function smoothNavigateUrl(event, url) {
   setTimeout(() => { window.location.href = url; }, 350);
 }
 
-// --- AUTO-FILL PROFILE ---
+// --- AUTO-FILL PROFILE (MULTI-ACCOUNT) ---
 document.addEventListener("DOMContentLoaded", function() {
   if (document.getElementById("profileName")) {
-    if (localStorage.getItem("p_name")) document.getElementById("profileName").value = localStorage.getItem("p_name");
-    if (localStorage.getItem("p_email")) document.getElementById("profileEmail").value = localStorage.getItem("p_email");
-    if (localStorage.getItem("p_phone")) document.getElementById("profilePhone").value = localStorage.getItem("p_phone");
-    if (localStorage.getItem("p_birth")) document.getElementById("profileBirth").value = localStorage.getItem("p_birth");
-    if (localStorage.getItem("p_city")) document.getElementById("profileCity").value = localStorage.getItem("p_city");
+    if (getProfileData("p_name")) document.getElementById("profileName").value = getProfileData("p_name");
+    if (getProfileData("p_email")) document.getElementById("profileEmail").value = getProfileData("p_email");
+    if (getProfileData("p_phone")) document.getElementById("profilePhone").value = getProfileData("p_phone");
+    if (getProfileData("p_birth")) document.getElementById("profileBirth").value = getProfileData("p_birth");
+    if (getProfileData("p_city")) document.getElementById("profileCity").value = getProfileData("p_city");
     
-    if (localStorage.getItem("p_gender")) {
-      const savedGender = localStorage.getItem("p_gender");
+    const savedGender = getProfileData("p_gender");
+    if (savedGender) {
       if (savedGender === "Laki-laki") document.getElementById("genderL").checked = true;
       if (savedGender === "Perempuan") document.getElementById("genderP").checked = true;
     }
@@ -550,22 +565,23 @@ function saveProfileChanges(event) {
   let gender = "Laki-laki";
   if (document.getElementById("genderP").checked) gender = "Perempuan";
   
+  const activeUser = getActiveUser();
+  
+  // Simpan spesifik per akun
+  localStorage.setItem("p_name_" + activeUser, name);
+  localStorage.setItem("p_email_" + activeUser, email);
+  localStorage.setItem("p_phone_" + activeUser, phone);
+  localStorage.setItem("p_gender_" + activeUser, gender);
+  localStorage.setItem("p_birth_" + activeUser, birth);
+  localStorage.setItem("p_city_" + activeUser, city);
+
+  // Simpan global untuk cadangan
   localStorage.setItem("p_name", name);
   localStorage.setItem("p_email", email);
   localStorage.setItem("p_phone", phone);
   localStorage.setItem("p_gender", gender);
   localStorage.setItem("p_birth", birth);
   localStorage.setItem("p_city", city);
-  
-  const activeUser = localStorage.getItem('active_user');
-  if (activeUser) {
-    localStorage.setItem("p_name_" + activeUser, name);
-    localStorage.setItem("p_email_" + activeUser, email);
-    localStorage.setItem("p_phone_" + activeUser, phone);
-    localStorage.setItem("p_gender_" + activeUser, gender);
-    localStorage.setItem("p_birth_" + activeUser, birth);
-    localStorage.setItem("p_city_" + activeUser, city);
-  }
   
   Swal.fire({
     icon: 'success',
@@ -597,6 +613,9 @@ function logoutAccount(event) {
     customClass: { popup: 'swal2-custom-font' }
   }).then((result) => {
     if (result.isConfirmed) {
+      // Hapus sesi login saja saat logout, agar data tidak hilang
+      localStorage.removeItem('active_user'); 
+      
       document.body.classList.add('fade-out');
       setTimeout(() => { window.location.href = '../Login/Login.html'; }, 350);
     }
@@ -633,12 +652,11 @@ function changeAvatar(event) {
   const reader = new FileReader();
   reader.onload = function(e) {
     const base64Image = e.target.result;
-    localStorage.setItem("user_avatar", base64Image);
+    const activeUser = getActiveUser();
     
-    const activeUser = localStorage.getItem('active_user');
-    if (activeUser) {
-      localStorage.setItem("user_avatar_" + activeUser, base64Image);
-    }
+    // Simpan spesifik per akun dan secara global
+    localStorage.setItem("user_avatar_" + activeUser, base64Image);
+    localStorage.setItem("user_avatar", base64Image);
     
     const profileImg = document.getElementById("profileAvatar");
     if (profileImg) profileImg.src = base64Image;
@@ -655,4 +673,44 @@ function changeAvatar(event) {
     }
   };
   reader.readAsDataURL(file);
+}
+
+// --- FILTER & SEARCH LOGIC ---
+function liveSearch(val) {
+  searchQuery = val.toLowerCase();
+  renderAllDestinations();
+  
+  const destPage = document.getElementById('page-destinations');
+  if (val && destPage && destPage.classList.contains('page-active') === false) {
+    showPage('destinations');
+  }
+}
+
+function syncSearch(val) {
+  searchQuery = val.toLowerCase();
+  const ids = ['heroSearch', 'destSearch'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.value !== val) el.value = val;
+  });
+}
+
+function filterMood(mood, btnElement = null) {
+  currentMood = mood;
+  if (btnElement) {
+    document.querySelectorAll('.filter-chip').forEach(btn => btn.classList.remove('active'));
+    btnElement.classList.add('active');
+  }
+  renderAllDestinations();
+}
+
+// Tambahan fungsi yang tadinya hilang:
+function filterRating(val) {
+  ratingFilter = val;
+  renderAllDestinations();
+}
+
+function filterSort(val) {
+  sortMode = val;
+  renderAllDestinations();
 }
