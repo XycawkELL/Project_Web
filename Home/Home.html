@@ -111,7 +111,7 @@
       <section class="trending-section">
         <div class="container">
           <div class="section-title">Sedang Trending </div>
-          <div class="section-subtitle">Destinasi paling banyak dicari minggu ini.</div>
+          <div class="section-subtitle">Destinasi paling banyak di kunjungi.</div>
 
           <div class="slider-container">
             <button onclick="slideTrending('left')" class="slider-arrow slider-arrow-left">
@@ -280,31 +280,31 @@
       <div class="footer-col">
         <h4>Jelajahi</h4>
         <div class="footer-links">
-          <a href="#" onclick="showPage('destinations')">Destinasi Populer</a>
-          <a href="#">Wisata Tersembunyi</a>
-          <a href="#">Wisata Budaya</a>
+          <a href="#" onclick="showPage('destinations'); filterSort('popular'); window.scrollTo(0,0); return false;">Destinasi Populer</a>
+          <a href="#" onclick="showPage('destinations'); filterMood('healing'); window.scrollTo(0,0); return false;">Wisata Tersembunyi</a>
+          <a href="#" onclick="showPage('destinations'); filterMood('culture'); window.scrollTo(0,0); return false;">Wisata Budaya</a>
         </div>
       </div>
       <div class="footer-col">
         <h4>Informasi</h4>
         <div class="footer-links">
-          <a href="#" onclick="showPage('about')">Tentang Kami</a>
-          <a href="#">Blog Perjalanan</a>
-          <a href="#">Panduan Wisata</a>
+          <a href="#" onclick="showPage('about'); window.scrollTo(0,0); return false;">Tentang Kami</a>
+          <a href="#" onclick="showToast('Fitur Blog Perjalanan akan segera hadir!', 'info'); return false;">Blog Perjalanan</a>
+          <a href="#" onclick="showToast('Fitur Panduan Wisata akan segera hadir!', 'info'); return false;">Panduan Wisata</a>
         </div>
       </div>
       <div class="footer-col">
         <h4>Bantuan</h4>
         <div class="footer-links">
-          <a href="#">Pusat Bantuan (FAQ)</a>
-          <a href="#">Hubungi Kami</a>
-          <a href="#">Syarat & Ketentuan</a>
+          <a href="profile_faq.html">Pusat Bantuan (FAQ)</a>
+          <a href="profile_cs.html">Hubungi Kami</a>
+          <a href="#" onclick="showToast('Halaman Syarat & Ketentuan segera rilis.', 'info'); return false;">Syarat & Ketentuan</a>
         </div>
       </div>
     </div>
     <div class="container footer-bottom">
       <div class="left">&copy; 2026 TemuTrip Indonesia. Hak Cipta Dilindungi.</div>
-      <div class="right">Dibuat di Nusantara</div>
+      <div class="right">Dibuat di SMK Telkom Purwokerto</div>
     </div>
   </footer>
 
